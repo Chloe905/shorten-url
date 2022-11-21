@@ -1,4 +1,5 @@
 const express = require('express')
+const { engine } = require('express-handlebars')
 const mongoose = require('mongoose')
 const port = 3000
 
@@ -18,8 +19,11 @@ db.once('open', () => {
   console.log('Mongodb connected')
 })
 
+app.engine('handlebars', engine({ defaultLayout: 'main' }))
+app.set('view engine', 'handlebars')
+
 app.get('/', (req, res) => {
-  res.send('This page is working sucessful')
+  res.render('index')
 })
 
 app.listen(port, () => {
