@@ -8,11 +8,23 @@
   </a>
   <div class="d-flex flex-column align-items-center">
     <h3>Success ! Please use the link</h3>
-    <a href="http://localhost:3000/{{ shortenUrl }}"> http://localhost:3000/{{ shortenUrl }}</a>
-    <button type="button" class="btn btn-secondary mt-3" style="max-width:100px;">Copy</button>
+    <a id="shorten_URL" href="http://localhost:3000/{{ shortenUrl }}"> http://localhost:3000/{{ shortenUrl }}</a>
+    <button id="copy_button" onclick="copy()" type="button" class="btn btn-secondary mt-3"
+      style="max-width:100px;">Copy</button>
   </div>
   <div class="text-end">
     <a href="/" class="btn btn-dark rounded-circle"><i class="fa-regular fa-circle-left"></i></a>
   </div>
 
 </div>
+
+{{!-- copy the shorten url --}}
+<script>
+  const shortenUrl = document.querySelector('#shorten_URL')
+  function copy() {
+    navigator.clipboard.writeText(shortenUrl.innerText)
+
+    // Alert the copied url
+    alert("Copied the URL already: " + shortenUrl.innerText);
+  }
+</script>
