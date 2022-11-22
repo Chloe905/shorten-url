@@ -33,7 +33,7 @@ app.get('/', (req, res) => {
 app.post('/', (req, res) => {
   const originalUrl = req.body.originalUrl
 
-  // check if the url is already exit
+  // check if the url is already exist
   Url.findOne({ originalUrl })
     .lean()
     .then((url) => {
@@ -49,6 +49,18 @@ app.post('/', (req, res) => {
         // if found, render that Url
         return res.render('shortenUrl', { shortenUrl: url.shortenUrl })
       }
+    })
+})
+
+app.get('/:url', (req, res) => {
+  const url = req.params.url
+
+  Url.findOne({ shortenUrl: url })
+    .lean()
+    .then(item => { res.redirect(`${item.originalUrl}`) })
+    .catch(err => {
+      res.redirect('/')
+      console.log(err)
     })
 })
 
