@@ -32,13 +32,24 @@ app.get('/', (req, res) => {
 
 app.post('/', (req, res) => {
   const originalUrl = req.body.originalUrl
-  const shortenUrl = generateUrl()
-  console.log(shortenUrl)
-  return Url.create({ originalUrl, shortenUrl })
-    .then(() => {
-      res.render('shortenUrl', { shortenUrl })
+
+  // check if the url is already exit
+  Url.findOne({ originalUrl })
+    .lean()
+    .then((url) => {
+      if (!url) {
+        // generate a new string if not found in database
+        const shortenUrl = generateUrl()
+        return Url.create({ originalUrl, shortenUrl })
+          .then(() => {
+            res.render('shortenUrl', { shortenUrl })
+          })
+          .catch(err => console.log(err))
+      } else {
+        // if found, render that Url
+        return res.render('shortenUrl', { shortenUrl: url.shortenUrl })
+      }
     })
-    .catch(err => console.log(err))
 })
 
 app.listen(port, () => {
