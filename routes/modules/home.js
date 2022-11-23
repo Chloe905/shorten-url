@@ -38,6 +38,7 @@ router.get('/:url', (req, res) => {
   Url.findOne({ shortenUrl: url })
     .lean()
     .then(item => {
+      // 若一開始為空:會顯示TypeError: Cannot read properties of null (reading 'originalUrl')，加入if/else排除
       if (!item) {
         res.redirect('/')
       } else {
